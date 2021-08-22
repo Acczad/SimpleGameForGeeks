@@ -83,78 +83,75 @@ let result = {
 }
 
 let gameStatus = {
-  isGameStart:false,
-  currentAns:0,
-  currentScore:0,
-  currentRound:0
+    isGameStart: false,
+    currentAns: 0,
+    currentScore: 0,
+    currentRound: 0,
+    isCurrentRoundGuess: false
 };
 
 let gameCondtions = {
-  score:20,
-  penalty:5,
-  roundCount:9
+    score: 20,
+    penalty: 5,
+    roundCount: 9
 };
 
 
-$(document).ready(function() {
+$(document).ready(function () {
     initGame();
     getGameCondtionsAndStart();
 });
 
 
-function getGameCondtionsAndStart()
-{
-  // todo make server call request to get game data
-  // todo make server call request to get game conditins
-  // currently read data from local variable
+function getGameCondtionsAndStart() {
+    // todo make server call request to get game data
+    // todo make server call request to get game conditins
+    // currently read data from local variable
 
-   gameStatus.startGame=true;
-   startGame(1);
+    gameStatus.startGame = true;
+    startGame(1);
 }
 
 
-function startGame(index)
-{
-  if(index>gameCondtions.roundCount)
-  {
-    gameStatus.startGame===false
+function startGame(index) {
+    if (index > gameCondtions.roundCount) {
+        gameStatus.startGame === false
+        updateBoard();
+        $("#gameImage").fadeOut();
+        $("#playAgainBtn").css('display', 'block');
+        return;
+    }
+
+    gameStatus.currentRound = index;
+    gameStatus.currentAns = result.guessList[index - 1].nationality;
+    moveNext(result.guessList[index - 1].image.url);
+
     updateBoard();
-      $("#gameImage").fadeOut();
-      $("#playAgainBtn").css('display', 'block');
-    return;
-  }
 
-  gameStatus.currentRound=index;
-  gameStatus.currentAns= result.guessList[index-1].nationality;
-  moveNext(result.guessList[index - 1].image.url);
-
-  updateBoard();
-
-  waitForUserAnswer().then(function () { 
-      startGame(++index) // recursive call for next round.
-  })   
+    waitForUserAnswer().then(function () {
+        startGame(++index) // recursive call for next round.
+    })
 }
 
 function waitForUserAnswer() {
-  return new Promise(resolve => setTimeout(resolve, 3100));
+    return new Promise(resolve => setTimeout(resolve, 3100));
 }
 
-function guessNatiolaity(answer,sender)
-{
-    if(gameStatus.startGame===false){ return; }
+function guessNatiolaity(answer, sender) {
+    if (gameStatus.startGame === false) { return; }
 
-    if(gameStatus.currentAns===answer)
-    {
-      var senderPosition = getOffset(sender); 
-      makeScore(senderPosition.left, senderPosition.top);
+    //TODO check gameStatus.isCurrentRoundGuess to prevent multiple try
+
+    if (gameStatus.currentAns === answer) {
+        var senderPosition = getOffset(sender);
+        makeScore(senderPosition.left, senderPosition.top);
     }
 
-    else{ makePenalty(); }
+    else { makePenalty(); }
     updateBoard();
 }
 
-function makeScore(x,y)
-{
+function makeScore(x, y) {
     $("#gameImage").stop()
     $("#gameImage").animate(
         {
@@ -164,51 +161,47 @@ function makeScore(x,y)
 
     $("#gameImage").fadeOut();
 
-  if(gameStatus.currentScore>= gameCondtions.roundCount * gameCondtions.score) { return; } // max score
-  gameStatus.currentScore+=gameCondtions.score;
+    if (gameStatus.currentScore >= gameCondtions.roundCount * gameCondtions.score) { return; } // max score
+    gameStatus.currentScore += gameCondtions.score;
 }
 
-function makePenalty()
-{
-  if(gameStatus.currentScore<=0){
-      return;
-  }
-    gameStatus.currentScore-=gameCondtions.penalty;
-}
-
-
- function moveNext(imagesrc) {
-
-  $("#gameImage").css('top', 0);
-  $("#gameImage").css('left', Math.floor(window.innerWidth/2)-$('.gameImage').height()/2);
-  $("#gameImage").attr("src",imagesrc);
-  $("#gameImage").fadeIn();
-
-  var windowHeight = $(window).height();
-  var imageHeight = $('.gameImage').height();
-  var bottomMargin = 80;
-  var pos = windowHeight - (imageHeight + bottomMargin);
-  $('.gameImage').animate({top:pos},3000,function () {
-      $('.gameImage').css({
-          bottom: bottomMargin,
-          top: 'auto'
-      });
-  });
+function makePenalty() {
+    if (gameStatus.currentScore <= 0) {
+        return;
+    }
+    gameStatus.currentScore -= gameCondtions.penalty;
 }
 
 
-function updateBoard()
-{
-  $("#currentRound").text(gameStatus.currentRound);
-  $("#maxRound").text(gameCondtions.roundCount);
-  $("#currentScore").text(gameStatus.currentScore);
+function moveNext(imagesrc) {
+    $("#gameImage").css('top', 0);
+    $("#gameImage").css('left', Math.floor(window.innerWidth / 2) - $('.gameImage').height() / 2);
+    $("#gameImage").attr("src", imagesrc);
+    $("#gameImage").fadeIn();
+
+    var windowHeight = $(window).height();
+    var imageHeight = $('.gameImage').height();
+    var bottomMargin = 80;
+    var pos = windowHeight - (imageHeight + bottomMargin);
+    $('.gameImage').animate({ top: pos }, 3000, function () {
+        $('.gameImage').css({
+            bottom: bottomMargin,
+            top: 'auto'
+        });
+    });
 }
 
-function initGame()
-{
+
+function updateBoard() {
+    $("#currentRound").text(gameStatus.currentRound);
+    $("#maxRound").text(gameCondtions.roundCount);
+    $("#currentScore").text(gameStatus.currentScore);
+}
+
+function initGame() {
     $("#playAgainBtn").css('display', 'none');
-    gameStatus.isGameStart=false;
-    gameStatus.currentAns=0;
+    gameStatus.isGameStart = false;
+    gameStatus.currentAns = 0;
     gameStatus.currentScore = 0;
     gameStatus.currentRound = 0;
     updateBoard();
@@ -220,13 +213,13 @@ $("#playAgainBtn").click(function () {
 });
 
 function getOffset(el) {
-  var x = 0;
-  var y = 0;
-  while( el && !isNaN( el.offsetLeft ) && !isNaN( el.offsetTop ) ) {
-      x += el.offsetLeft - el.scrollLeft;
-      y += el.offsetTop - el.scrollTop;
-      el = el.offsetParent;
-  }
-  return { top: y, left: x };
+    var x = 0;
+    var y = 0;
+    while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
+        x += el.offsetLeft - el.scrollLeft;
+        y += el.offsetTop - el.scrollTop;
+        el = el.offsetParent;
+    }
+    return { top: y, left: x };
 }
 
