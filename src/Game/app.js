@@ -1,3 +1,86 @@
+// TODO read this from server call. 
+// this is for sample.
+let result = {
+    "guessList": [
+        {
+            "id": 1,
+            "nationality": 1,
+            "image": {
+                "id": 1,
+                "url": "images//1.jpeg"
+            }
+        },
+        {
+            "id": 2,
+            "nationality": 2,
+            "image": {
+                "id": 2,
+                "url": "images//2.jpeg"
+            }
+        },
+        {
+            "id": 3,
+            "nationality": 3,
+            "image": {
+                "id": 3,
+                "url": "images//3.jpeg"
+            }
+        },
+        {
+            "id": 4,
+            "nationality": 2,
+            "image": {
+                "id": 2,
+                "url": "images//2.jpeg"
+            }
+        },
+        {
+            "id": 5,
+            "nationality": 2,
+            "image": {
+                "id": 2,
+                "url": "images//2.jpeg"
+            }
+        },
+        {
+            "id": 6,
+            "nationality": 1,
+            "image": {
+                "id": 1,
+                "url": "images//1.jpeg"
+            }
+        },
+        {
+            "id": 7,
+            "nationality": 1,
+            "image": {
+                "id": 1,
+                "url": "images//1.jpeg"
+            }
+        },
+        {
+            "id": 8,
+            "nationality": 1,
+            "image": {
+                "id": 1,
+                "url": "images//1.jpeg"
+            }
+        }
+        ,
+        {
+            "id": 9,
+            "nationality": 1,
+            "image": {
+                "id": 1,
+                "url": "images//1.jpeg"
+            }
+        }
+    ],
+    "gameConditions": {
+        "score": 25,
+        "penalty": 5
+    }
+}
 
 let gameStatus = {
   isGameStart:false,
@@ -19,7 +102,7 @@ $(document).ready(function() {
 });
 
 
-function getGameCondtionsAndStart(answer)
+function getGameCondtionsAndStart()
 {
   // todo make server call request to get game data
   // todo make server call request to get game conditins
@@ -36,8 +119,8 @@ function startGame(index)
   {
     gameStatus.startGame===false
     updateBoard();
-    $("#gameImage").fadeOut();
-     // TODO reset game and start new game.
+      $("#gameImage").fadeOut();
+      $("#playAgainBtn").css('display', 'block');
     return;
   }
 
@@ -123,12 +206,18 @@ function updateBoard()
 
 function initGame()
 {
+    $("#playAgainBtn").css('display', 'none');
     gameStatus.isGameStart=false;
     gameStatus.currentAns=0;
-    gameStatus.currentScore=0;
+    gameStatus.currentScore = 0;
+    gameStatus.currentRound = 0;
     updateBoard();
 }
 
+$("#playAgainBtn").click(function () {
+    initGame();
+    getGameCondtionsAndStart();
+});
 
 function getOffset(el) {
   var x = 0;
@@ -141,87 +230,3 @@ function getOffset(el) {
   return { top: y, left: x };
 }
 
-// TODO read this from server call. 
-// this is for sample.
-
-var result= {
-    "guessList": [
-      {
-        "id": 1,
-        "nationality": 1,
-        "image": {
-          "id": 1,
-          "url": "images//1.jpeg"
-        }
-      },
-      {
-        "id": 2,
-        "nationality": 2,
-        "image": {
-          "id": 2,
-          "url": "images//2.jpeg"
-        }
-      },
-      {
-        "id": 3,
-        "nationality": 3,
-        "image": {
-          "id": 3,
-          "url": "images//3.jpeg"
-        }
-      },
-      {
-        "id": 4,
-        "nationality": 2,
-        "image": {
-          "id": 2,
-          "url": "images//2.jpeg"
-        }
-      },
-      {
-        "id": 5,
-        "nationality": 2,
-        "image": {
-          "id": 2,
-          "url": "images//2.jpeg"
-        }
-      },
-      {
-        "id": 6,
-        "nationality": 1,
-        "image": {
-          "id": 1,
-          "url": "images//1.jpeg"
-        }
-      },
-      {
-        "id": 7,
-        "nationality": 1,
-        "image": {
-          "id": 1,
-          "url": "images//1.jpeg"
-        }
-      },
-      {
-        "id": 8,
-        "nationality": 1,
-        "image": {
-          "id": 1,
-          "url": "images//1.jpeg"
-        }
-      }
-      ,
-      {
-        "id": 9,
-        "nationality": 1,
-        "image": {
-          "id": 1,
-          "url": "images//1.jpeg"
-        }
-      }
-    ],
-    "gameConditions": {
-      "score": 25,
-      "penalty": 5
-    }
-  }
