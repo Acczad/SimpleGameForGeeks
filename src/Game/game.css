@@ -1,0 +1,13 @@
+
+.ansbutton {
+    background-color:antiquewhite;
+    color: black;
+    height: 100px;
+    width:100px;
+}
+
+.gameImage {
+    position: absolute;
+    height: 200px;
+    width: 200px;
+  }

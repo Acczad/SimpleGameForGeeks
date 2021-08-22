@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Guess Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="game.css" type="text/css" />
+</head>
+<body>
+        <div class="row navbar-fixed-top">
+            <div class="col-xs-1 pull-left ansbutton" 
+            disabled="disabled"
+            data-id="1"
+            onclick="guessNatiolaity($(this).data('id'),this)" >Japanese</div>
+            
+            <img src="" class="gameImage" id="gameImage">
+            
+            <div class="col-xs-1 pull-right ansbutton" 
+             disabled="disabled"
+             data-id="3"
+             onclick="guessNatiolaity($(this).data('id'),this)" >Chinese</div>
+
+        </div>
+        
+        <div class="row navbar-fixed-bottom">
+            <div class="col-xs-1 pull-left ansbutton" 
+            disabled="disabled"
+            data-id="4"
+            onclick="guessNatiolaity($(this).data('id'),this)" >Korean</div>
+
+            <div class="col-xs-1 pull-right ansbutton" 
+            disabled="disabled"
+            data-id="2"
+            onclick="guessNatiolaity($(this).data('id'),this)" >Thai</div>
+        </div>
+
+        <div class="row navbar-fixed-bottom">
+            <div class="col-xs-12">
+                <div class="col-sm-offset-6">
+                    <span id="currentRound"></span>/<span id="maxRound"></span>
+                    <span>- score : </span>
+                    <span id="currentScore"></span>
+                </div>
+            </div>
+
+        </div>
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
