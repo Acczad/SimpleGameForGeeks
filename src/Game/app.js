@@ -7,7 +7,7 @@ let gameStatus = {
 };
 
 let gameCondtions = {
-  score:25,
+  score:20,
   penalty:5,
   roundCount:9
 };
